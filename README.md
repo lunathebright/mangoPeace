@@ -1,4 +1,4 @@
-# 망고 플레이트 Clone Project Frontend
+# 망고 플레이트를 모티브로 한 팀 프로젝트
 
 ​
 
