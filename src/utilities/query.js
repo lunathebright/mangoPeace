@@ -15,4 +15,4 @@ const queryToString = queryObj => {
   );
 };
 
-export { stringToQuery as stringToQuery, queryToString as queryToString };
+export { stringToQuery, queryToString };

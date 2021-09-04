@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { stringToQuery } from '../../utilities/query';
+import fetchData from '../../utilities/fetch';
 import { BASE_URL } from '../../config';
 
 import StoreImgBox from './StoreImgBox/StoreImgBox';
@@ -23,8 +24,26 @@ class Detail extends React.Component {
 
     this.props.history.push(`?offset=0&limit=10&rating-min=1&rating-max=5`);
 
-    this.fetchData(`restaurants/${id}`);
-    this.fetchData(`restaurants/${id}/foods`);
+    fetchData(
+      `restaurants/${id}`,
+      localStorage.getItem('TOKEN')
+        ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+        : null,
+      {
+        onSuccess: res => this.setState({ restaurants: res.result }),
+      },
+      { onReject: res => alert(res) }
+    );
+    fetchData(
+      `restaurants/${id}/foods`,
+      localStorage.getItem('TOKEN')
+        ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+        : null,
+      {
+        onSuccess: res => this.setState({ foods: res.result }),
+      },
+      { onReject: res => alert(res) }
+    );
     this.fetchReviewData();
   };
 
@@ -34,8 +53,26 @@ class Detail extends React.Component {
     if (prevProps.match.params.id !== id) {
       this.props.history.push(`?offset=0&limit=10&rating-min=1&rating-max=5`);
 
-      this.fetchData(`restaurants/${id}`);
-      this.fetchData(`restaurants/${id}/foods`);
+      fetchData(
+        `restaurants/${id}`,
+        localStorage.getItem('TOKEN')
+          ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+          : null,
+        {
+          onSuccess: res => this.setState({ restaurants: res.result }),
+        },
+        { onReject: res => alert(res) }
+      );
+      fetchData(
+        `restaurants/${id}/foods`,
+        localStorage.getItem('TOKEN')
+          ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+          : null,
+        {
+          onSuccess: res => this.setState({ foods: res.result }),
+        },
+        { onReject: res => alert(res) }
+      );
       this.fetchReviewData();
     }
   };
@@ -80,32 +117,21 @@ class Detail extends React.Component {
             return { reviews: [...prev.reviews, ...res.result] };
           });
         }
-        this.fetchData(`restaurants/${match.params.id}`);
+        fetchData(
+          `restaurants/${match.params.id}`,
+          localStorage.getItem('TOKEN')
+            ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+            : null,
+          {
+            onSuccess: res => this.setState({ restaurants: res.result }),
+          },
+          { onReject: res => alert(res) }
+        );
       });
   };
 
-  fetchData = addr => {
-    fetch(`${BASE_URL}/${addr}`, {
-      headers: {
-        Authorization: localStorage.getItem('TOKEN'),
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        const name = sortAddr(addr);
-        this.setState({
-          [name]: res.result,
-        });
-      });
-
-    const sortAddr = addr => {
-      const splitAddr = addr.split('/');
-
-      return parseInt(splitAddr[splitAddr.length - 1]) ===
-        Number(this.props.match.params.id)
-        ? splitAddr[0]
-        : splitAddr[splitAddr.length - 1];
-    };
+  handleSetRestaurants = res => {
+    this.setState({ restaurants: res });
   };
 
   render() {
@@ -117,16 +143,15 @@ class Detail extends React.Component {
         <div className="detailMain">
           {restaurants && foods && (
             <StoreInfo
-              fetchData={this.fetchData}
               storeId={this.props.match.params.id}
               restaurantsData={restaurants}
               foodsData={foods}
+              handleSetRestaurants={this.handleSetRestaurants}
             />
           )}
           {reviews && restaurants && (
             <StoreReviewBox
               storeId={this.props.match.params.id}
-              fetchData={this.fetchData}
               fetchReviewData={this.fetchReviewData}
               handleReviewDel={this.handleReviewDel}
               handleReviewEdit={this.handleReviewEdit}

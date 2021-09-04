@@ -34,6 +34,11 @@ class ReviewInput extends React.Component {
   handleReviewSubmit = e => {
     e.preventDefault();
 
+    if (!localStorage.getItem('TOKEN')) {
+      alert('로그인 후 이용 가능한 서비스입니다');
+      return;
+    }
+
     this.fetchReviewInput();
     this.setState({
       reviewInput: '',

@@ -96,7 +96,7 @@ class SignUp extends React.Component {
       <div className="modalBg">
         <form className="signUpForm" onSubmit={this.goToMain}>
           <div className="signUpLogo">
-            <img className="logoImage" alt="logo" src="images/mango.png" />
+            <img className="logoImage" alt="logo" src="/images/mango.png" />
           </div>
           <div className="signUpTitle">회원가입</div>
           <div className="signUpContainer">
