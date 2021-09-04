@@ -16,14 +16,15 @@ class StoreInfo extends React.Component {
   };
 
   render() {
-    const { restaurantsData, foodsData, storeId, fetchData } = this.props;
+    const { restaurantsData, foodsData, storeId, handleSetRestaurants } =
+      this.props;
 
     return (
       <div className="storeInfo">
         <StoreHeader
           storeId={storeId}
-          fetchData={fetchData}
           restaurantsData={restaurantsData}
+          handleSetRestaurants={handleSetRestaurants}
         />
         <div className="storeInfoBottom">
           <StoreInfoTable

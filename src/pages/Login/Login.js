@@ -73,7 +73,7 @@ class Login extends React.Component {
       <div className="modalBg">
         <form className="loginForm" onSubmit={this.goToMain}>
           <div className="loginLogo">
-            <img className="logoImage" alt="logo" src="images/mango.png" />
+            <img className="logoImage" alt="logo" src="/images/mango.png" />
           </div>
           <div className="loginTitle">로그인</div>
           <input

@@ -1,11 +1,17 @@
 import React from 'react';
 
 import { BASE_URL } from '../../../../config';
+import fetchData from '../../../../utilities/fetch';
 
 import './StoreHeader.scss';
 
 class StoreHeader extends React.Component {
   handleClickWish = () => {
+    if (!localStorage.getItem('TOKEN')) {
+      alert('로그인 후 이용 가능한 서비스입니다');
+      return;
+    }
+
     const { is_wished } = this.props.restaurantsData;
 
     if (is_wished) {
@@ -21,7 +27,18 @@ class StoreHeader extends React.Component {
         Authorization: localStorage.getItem('TOKEN'),
       },
       method: method,
-    }).then(() => this.props.fetchData(`restaurants/${this.props.storeId}`));
+    }).then(() => {
+      fetchData(
+        `restaurants/${this.props.storeId}`,
+        localStorage.getItem('TOKEN')
+          ? { headers: { Authorization: localStorage.getItem('TOKEN') } }
+          : null,
+        {
+          onSuccess: res => this.props.handleSetRestaurants(res.result),
+        },
+        { onReject: res => alert(res) }
+      );
+    });
   };
 
   render() {

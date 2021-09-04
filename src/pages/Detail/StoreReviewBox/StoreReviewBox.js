@@ -74,7 +74,6 @@ class StoreReviewBox extends React.Component {
       handleReviewDel,
       handleReviewEdit,
       fetchReviewData,
-      fetchData,
       storeId,
       history,
     } = this.props;
@@ -84,7 +83,6 @@ class StoreReviewBox extends React.Component {
     return (
       <div className="storeReviewBox">
         <ReviewInput
-          fetchData={fetchData}
           fetchReviewData={fetchReviewData}
           storeId={storeId}
           storeName={restaurantsData.name}
